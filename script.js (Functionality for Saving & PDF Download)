@@ -1,0 +1,24 @@
+document.addEventListener("DOMContentLoaded", function () {
+    var quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+
+    // Save as text
+    document.getElementById("save").addEventListener("click", function () {
+        const text = quill.getText();
+        const blob = new Blob([text], { type: "text/plain" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "document.txt";
+        link.click();
+    });
+
+    // Convert to PDF
+    document.getElementById("downloadPdf").addEventListener("click", function () {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const text = quill.getText();
+        doc.text(text, 10, 10);
+        doc.save("document.pdf");
+    });
+});
